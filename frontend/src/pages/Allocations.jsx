@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Layout from '../components/Layout.jsx';
 import StatusPill from '../components/StatusPill.jsx';
+import { SkeletonList } from '../components/Skeleton.jsx';
 import api from '../api/client.js';
 import { useAuth } from '../context/AuthContext.jsx';
 
@@ -11,13 +12,18 @@ export default function Allocations() {
   const [allocations, setAllocations] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(true);
 
   async function load() {
+    setLoading(true);
     try {
       const { data } = await api.get('/allocations');
       setAllocations(data);
+      setError('');
     } catch {
       setError('Could not load allocations.');
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -52,9 +58,11 @@ export default function Allocations() {
 
         {error && <div className="text-sm text-danger mb-4">{error}</div>}
 
-        {allocations.length === 0 ? (
+        {loading ? (
+          <SkeletonList />
+        ) : allocations.length === 0 ? (
           <div className="asset-tag p-8 pl-10 text-center text-muted text-sm">
-            No allocations yet.
+            No allocations yet. {canManage && 'Check out an asset to get started.'}
           </div>
         ) : (
           <div className="space-y-3">

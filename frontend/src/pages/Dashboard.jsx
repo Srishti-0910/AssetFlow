@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 import Layout from '../components/Layout.jsx';
 import StatusPill from '../components/StatusPill.jsx';
+import { SkeletonStatRow, SkeletonBlock } from '../components/Skeleton.jsx';
 import api from '../api/client.js';
 
 const CHART_COLORS = ['#2DD4BF', '#F5A623', '#F85149', '#8B949E', '#5B8DEF'];
@@ -9,12 +10,14 @@ const CHART_COLORS = ['#2DD4BF', '#F5A623', '#F85149', '#8B949E', '#5B8DEF'];
 export default function Dashboard() {
   const [data, setData] = useState(null);
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     api
       .get('/dashboard/summary')
       .then((res) => setData(res.data))
-      .catch(() => setError('Could not load dashboard data. Is the backend running?'));
+      .catch(() => setError('Could not load dashboard data. Is the backend running?'))
+      .finally(() => setLoading(false));
   }, []);
 
   const totalAssets = data
@@ -37,7 +40,23 @@ export default function Dashboard() {
           </div>
         )}
 
-        {data && (
+        {loading && (
+          <>
+            <SkeletonStatRow />
+            <div className="grid grid-cols-3 gap-6">
+              <div className="asset-tag p-6 pl-8 col-span-1">
+                <SkeletonBlock className="h-3 w-24 mb-4" />
+                <SkeletonBlock className="h-44 w-full" />
+              </div>
+              <div className="asset-tag p-6 pl-8 col-span-2">
+                <SkeletonBlock className="h-3 w-32 mb-4" />
+                <SkeletonBlock className="h-44 w-full" />
+              </div>
+            </div>
+          </>
+        )}
+
+        {!loading && data && (
           <>
             <div className="grid grid-cols-4 gap-4 mb-8">
               <StatCard label="Total assets" value={totalAssets} />

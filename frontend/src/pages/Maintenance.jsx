@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Layout from '../components/Layout.jsx';
 import StatusPill from '../components/StatusPill.jsx';
+import { SkeletonList } from '../components/Skeleton.jsx';
 import api from '../api/client.js';
 import { useAuth } from '../context/AuthContext.jsx';
 
@@ -11,13 +12,18 @@ export default function Maintenance() {
   const [records, setRecords] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(true);
 
   async function load() {
+    setLoading(true);
     try {
       const { data } = await api.get('/maintenance');
       setRecords(data);
+      setError('');
     } catch {
       setError('Could not load maintenance records.');
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -52,9 +58,11 @@ export default function Maintenance() {
 
         {error && <div className="text-sm text-danger mb-4">{error}</div>}
 
-        {records.length === 0 ? (
+        {loading ? (
+          <SkeletonList />
+        ) : records.length === 0 ? (
           <div className="asset-tag p-8 pl-10 text-center text-muted text-sm">
-            No maintenance scheduled.
+            No maintenance scheduled. {canManage && 'All clear — nothing needs attention.'}
           </div>
         ) : (
           <div className="space-y-3">

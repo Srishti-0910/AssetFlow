@@ -5,7 +5,24 @@ const connectDB = require('./config/db');
 
 const app = express();
 
-app.use(cors({ origin: process.env.CLIENT_ORIGIN || 'http://localhost:5173' }));
+// CLIENT_ORIGIN supports one or more comma-separated origins, e.g.
+// "https://assetflow.vercel.app,https://assetflow-git-main-you.vercel.app"
+const allowedOrigins = (process.env.CLIENT_ORIGIN || 'http://localhost:5173')
+  .split(',')
+  .map((o) => o.trim())
+  .filter(Boolean);
+
+app.use(
+  cors({
+    origin(origin, callback) {
+      // allow non-browser requests (curl, health checks) with no origin header
+      if (!origin || allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+      return callback(new Error(`CORS blocked for origin: ${origin}`));
+    },
+  })
+);
 app.use(express.json());
 
 app.get('/api/health', (req, res) => {

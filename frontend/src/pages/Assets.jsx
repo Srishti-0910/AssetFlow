@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Layout from '../components/Layout.jsx';
 import StatusPill from '../components/StatusPill.jsx';
+import { SkeletonCards } from '../components/Skeleton.jsx';
 import api from '../api/client.js';
 import { useAuth } from '../context/AuthContext.jsx';
 
@@ -55,7 +56,9 @@ export default function Assets() {
             </button>
           )}
         </div>
-        <p className="text-muted text-sm mb-6">{items.length} asset{items.length !== 1 ? 's' : ''} matching filters.</p>
+        <p className="text-muted text-sm mb-6">
+          {loading ? 'Loading assets…' : `${items.length} asset${items.length !== 1 ? 's' : ''} matching filters.`}
+        </p>
 
         <div className="flex gap-3 mb-6">
           <input
@@ -89,7 +92,7 @@ export default function Assets() {
         {error && <div className="text-sm text-danger mb-4">{error}</div>}
 
         {loading ? (
-          <p className="text-muted text-sm">Loading…</p>
+          <SkeletonCards />
         ) : items.length === 0 ? (
           <div className="asset-tag p-8 pl-10 text-center text-muted text-sm">
             No assets match. {canManage && 'Create the first one to get started.'}
