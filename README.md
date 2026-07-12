@@ -49,6 +49,41 @@ npm run dev
 
 The frontend runs on `http://localhost:5173` and proxies API requests to the backend on `http://localhost:5000`.
 
+### Load demo data (recommended for a quick look)
+
+```bash
+cd backend
+npm run seed
+```
+
+This creates two accounts and a handful of sample assets, allocations, and maintenance records:
+
+| Role  | Email                | Password      |
+|-------|-----------------------|---------------|
+| Admin | admin@assetflow.dev   | password123   |
+| Staff | staff@assetflow.dev   | password123   |
+
+## API Reference
+
+All routes are prefixed with `/api`. Authenticated routes expect `Authorization: Bearer <token>`.
+
+| Method | Route                          | Description                          | Access          |
+|--------|---------------------------------|--------------------------------------|-----------------|
+| POST   | `/auth/register`               | Create an account                     | Public          |
+| POST   | `/auth/login`                  | Get a JWT                             | Public          |
+| GET    | `/auth/me`                     | Current user profile                  | Authenticated   |
+| GET    | `/assets`                      | List/search/filter assets             | Authenticated   |
+| POST   | `/assets`                      | Create an asset                       | Admin, Manager  |
+| PUT    | `/assets/:id`                  | Update an asset                       | Admin, Manager  |
+| DELETE | `/assets/:id`                  | Delete an asset                       | Admin           |
+| GET    | `/allocations`                 | List allocations                      | Authenticated   |
+| POST   | `/allocations/check-out`       | Assign an asset to a user              | Admin, Manager  |
+| POST   | `/allocations/:id/check-in`    | Return an asset                       | Admin, Manager  |
+| GET    | `/maintenance`                 | List maintenance records              | Authenticated   |
+| POST   | `/maintenance`                 | Schedule maintenance                  | Admin, Manager  |
+| POST   | `/maintenance/:id/complete`    | Mark maintenance complete             | Admin, Manager  |
+| GET    | `/dashboard/summary`           | Aggregated stats for the dashboard    | Authenticated   |
+
 ## Roadmap
 
 - [x] Backend scaffold & data models
