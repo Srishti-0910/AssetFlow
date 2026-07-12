@@ -28,7 +28,6 @@ const assetSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-assetSchema.index({ assetTag: 1 });
 assetSchema.index({ status: 1, category: 1 });
 
 module.exports = mongoose.model('Asset', assetSchema);
