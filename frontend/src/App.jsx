@@ -5,19 +5,13 @@ import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx';
 import Dashboard from './pages/Dashboard.jsx';
 import Assets from './pages/Assets.jsx';
+import Allocations from './pages/Allocations.jsx';
+import Maintenance from './pages/Maintenance.jsx';
 
 function ProtectedRoute({ children }) {
   const { user } = useAuth();
   if (!user) return <Navigate to="/login" replace />;
   return children;
-}
-
-function Placeholder({ label }) {
-  return (
-    <div className="min-h-screen flex items-center justify-center text-muted font-mono text-sm">
-      {label} — coming in the next commit
-    </div>
-  );
 }
 
 export default function App() {
@@ -38,6 +32,22 @@ export default function App() {
         element={
           <ProtectedRoute>
             <Assets />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/allocations"
+        element={
+          <ProtectedRoute>
+            <Allocations />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/maintenance"
+        element={
+          <ProtectedRoute>
+            <Maintenance />
           </ProtectedRoute>
         }
       />
