@@ -13,9 +13,9 @@ app.get('/api/health', (req, res) => {
 });
 
 app.use('/api/auth', require('./routes/authRoutes'));
+app.use('/api/assets', require('./routes/assetRoutes'));
 
 // Feature routes are mounted here as they're built:
-// app.use('/api/assets', require('./routes/assetRoutes'));
 // app.use('/api/allocations', require('./routes/allocationRoutes'));
 // app.use('/api/maintenance', require('./routes/maintenanceRoutes'));
 // app.use('/api/dashboard', require('./routes/dashboardRoutes'));
