@@ -12,8 +12,9 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', service: 'AssetFlow API' });
 });
 
+app.use('/api/auth', require('./routes/authRoutes'));
+
 // Feature routes are mounted here as they're built:
-// app.use('/api/auth', require('./routes/authRoutes'));
 // app.use('/api/assets', require('./routes/assetRoutes'));
 // app.use('/api/allocations', require('./routes/allocationRoutes'));
 // app.use('/api/maintenance', require('./routes/maintenanceRoutes'));
