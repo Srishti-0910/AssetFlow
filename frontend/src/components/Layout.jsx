@@ -3,10 +3,19 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
 
 const navItems = [
-  { to: '/', label: 'Dashboard', end: true },
-  { to: '/assets', label: 'Assets' },
-  { to: '/allocations', label: 'Allocations' },
-  { to: '/maintenance', label: 'Maintenance' },
+  { to: "/", label: "Dashboard", end: true },
+
+  { to: "/departments", label: "Departments" },
+
+  { to: "/categories", label: "Categories" },
+
+  { to: "/employees", label: "Employees" },
+
+  { to: "/assets", label: "Assets" },
+
+  { to: "/allocations", label: "Allocations" },
+
+  { to: "/maintenance", label: "Maintenance" },
 ];
 
 export default function Layout({ children }) {

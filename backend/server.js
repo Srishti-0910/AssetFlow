@@ -18,6 +18,8 @@ app.use('/api/allocations', require('./routes/allocationRoutes'));
 app.use('/api/maintenance', require('./routes/maintenanceRoutes'));
 app.use('/api/dashboard', require('./routes/dashboardRoutes'));
 app.use("/api/departments", require("./routes/departmentRoutes"));
+app.use("/api/categories", require("./routes/categoryRoutes"));
+app.use("/api/employees", require("./routes/employeeRoutes"));
 
 // Fallback error handler
 app.use((err, req, res, next) => {

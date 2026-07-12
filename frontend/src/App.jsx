@@ -1,24 +1,34 @@
-import React from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
-import { useAuth } from './context/AuthContext.jsx';
-import Login from './pages/Login.jsx';
-import Register from './pages/Register.jsx';
-import Dashboard from './pages/Dashboard.jsx';
-import Assets from './pages/Assets.jsx';
-import Allocations from './pages/Allocations.jsx';
-import Maintenance from './pages/Maintenance.jsx';
+import React from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
+import { useAuth } from "./context/AuthContext.jsx";
+
+import Login from "./pages/Login.jsx";
+import Register from "./pages/Register.jsx";
+import Dashboard from "./pages/Dashboard.jsx";
+import Departments from "./pages/Departments.jsx";
+import Assets from "./pages/Assets.jsx";
+import Allocations from "./pages/Allocations.jsx";
+import Maintenance from "./pages/Maintenance.jsx";
 
 function ProtectedRoute({ children }) {
   const { user } = useAuth();
-  if (!user) return <Navigate to="/login" replace />;
+
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+
   return children;
 }
 
 export default function App() {
   return (
     <Routes>
+      {/* Public Routes */}
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+
+      {/* Protected Routes */}
+
       <Route
         path="/"
         element={
@@ -27,6 +37,16 @@ export default function App() {
           </ProtectedRoute>
         }
       />
+
+      <Route
+        path="/departments"
+        element={
+          <ProtectedRoute>
+            <Departments />
+          </ProtectedRoute>
+        }
+      />
+
       <Route
         path="/assets"
         element={
@@ -35,6 +55,7 @@ export default function App() {
           </ProtectedRoute>
         }
       />
+
       <Route
         path="/allocations"
         element={
@@ -43,6 +64,7 @@ export default function App() {
           </ProtectedRoute>
         }
       />
+
       <Route
         path="/maintenance"
         element={
@@ -51,6 +73,8 @@ export default function App() {
           </ProtectedRoute>
         }
       />
+
+      {/* Redirect Unknown Routes */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
